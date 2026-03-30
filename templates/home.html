@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Predictor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e003b, #0d001a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 40px 60px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+        h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            background: -webkit-linear-gradient(45deg, #00e5ff, #0077ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        input[type="number"], select {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        select option {
+            background: #1e003b;
+            color: #fff;
+        }
+        input:focus, select:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(90deg, #00e5ff, #0077ff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 229, 255, 0.4);
+        }
+        .result-box {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px dashed rgba(0, 229, 255, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+        .result-box h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+        .result-box h1 {
+            margin: 10px 0 0;
+            font-size: 2.5rem;
+            color: #00e5ff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Item Details</h2>
+        <form action="/predictdata" method="POST">
+            <div class="form-group">
+                <label for="item_weight">Item Weight</label>
+                <input type="number" step="any" name="item_weight" id="item_weight" placeholder="e.g. 15.5" required>
+            </div>
+            <div class="form-group">
+                <label for="item_mrp">Item MRP (Max Retail Price)</label>
+                <input type="number" step="any" name="item_mrp" id="item_mrp" placeholder="e.g. 150.75" required>
+            </div>
+            <div class="form-group">
+                <label for="item_fat_content">Item Fat Content</label>
+                <select name="item_fat_content" id="item_fat_content" required>
+                    <option value="" disabled selected>Select Fat Content</option>
+                    <option value="Low Fat">Low Fat</option>
+                    <option value="Regular">Regular</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="outlet_size">Outlet Size</label>
+                <select name="outlet_size" id="outlet_size" required>
+                    <option value="" disabled selected>Select Outlet Size</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="outlet_location_type">Outlet Location Type</label>
+                <select name="outlet_location_type" id="outlet_location_type" required>
+                    <option value="" disabled selected>Select Location Type</option>
+                    <option value="Tier 1">Tier 1</option>
+                    <option value="Tier 2">Tier 2</option>
+                    <option value="Tier 3">Tier 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="item_type">Item Type</label>
+                <select name="item_type" id="item_type" required>
+                    <option value="" disabled selected>Select Item Type</option>
+                    <option value="Baking Goods">Baking Goods</option>
+                    <option value="Breads">Breads</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Canned">Canned</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Frozen Foods">Frozen Foods</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Snack Foods">Snack Foods</option>
+                    <option value="Soft Drinks">Soft Drinks</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Forecast Sales</button>
+        </form>
+
+        {% if results %}
+        <div class="result-box">
+            <h3>Predicted Sales Volume</h3>
+            <h1>{{ results }}</h1>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
